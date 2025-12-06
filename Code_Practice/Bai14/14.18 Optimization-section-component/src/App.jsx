@@ -1,0 +1,63 @@
+import { useState } from "react";
+import { myData, EXAMPLES } from "../data.js";
+import Header from "./Components/Header/Header.jsx";
+import MainContent from "./Components/MainContent/MainContent.jsx";
+import TabButton from "./Components/TabButton.jsx";
+import Section from "./Components/MainContent/Section.jsx";
+
+function App() {
+  const [selectedTopic, setSelectedTopic] = useState();
+  let content = <p>Vui lòng click vào nút để chọn 1 chủ đề</p>;
+  if (selectedTopic) {
+    content = (
+      <div id="tab-content">
+        <h3>{EXAMPLES[selectedTopic].title}</h3>
+        <p>{EXAMPLES[selectedTopic].desc}</p>
+        <pre>
+          <code>{EXAMPLES[selectedTopic].code}</code>
+        </pre>
+      </div>
+    );
+  }
+  function handleSelect(selectedButton) {
+    setSelectedTopic(selectedButton);
+  }
+  return (
+    <>
+      <Header />
+      <main>
+        <section id="core-concepts">
+          <h2>Khái niệm chính trong React</h2>
+          <ul>
+            {/* <MainContent{...myData[0]} />
+            <MainContent{...myData[1]} />
+            <MainContent{...myData[2]} />
+            <MainContent{...myData[3]} /> */}
+            {myData.map((item) => (<MainContent key={item.title} {...item} />))}
+          </ul>
+        </section>
+        <Section title="Examples" id="examples" className="demo-class">
+          <menu>
+            <TabButton
+             isSelected={selectedTopic === "components"}
+             onSelect={() => handleSelect("components")}>Components</TabButton>
+            <TabButton
+             isSelected={selectedTopic === "jsx"}
+             onSelect={() => handleSelect("jsx")}>JSX</TabButton>
+            <TabButton
+             isSelected={selectedTopic === "props"}
+             onSelect={() => handleSelect("props")}>Props</TabButton>
+            <TabButton
+             isSelected={selectedTopic === "state"}
+             onSelect={() => handleSelect("state")}>State</TabButton>
+            {/* <TabButton batky="Components" /> */}
+          </menu>
+          {/* Cách 3 */}
+          {content}
+        </Section>
+      </main>
+    </>
+  );
+}
+
+export default App;
