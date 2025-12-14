@@ -1,0 +1,22 @@
+import { useState, useEffect } from "react";
+
+export default function DemoWithDeps() {
+    const [count, setCount] = useState(0);
+
+    useEffect(() => {
+        console.log("Chạy useEffect sau mỗi lần count đổi lại", count);
+        { console.log("Bắt đầu fetch API") };
+        fetch('https://fakestoreapi.com/products')
+            .then(response => response.json())
+            .then(data => console.log(data));
+        { console.log("Chường trình đã chạy qua fetch API") };
+    }, [count]); // Có dependency là count
+    return (
+        <>
+            <h3>Không truyển Dependency</h3>
+            <button onClick={() => setCount(count + 1)}>Tăng</button>
+            <p>Giá trị: {count}</p>
+            {console.log("Render lại component giao diện")}
+        </>
+    )
+}
